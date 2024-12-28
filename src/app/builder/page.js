@@ -107,7 +107,7 @@ export default function WorkoutBuilderPage() {
   }, [filterCategory, filterDifficulty, searchQuery]);
 
   return (
-    <main className="bg-gray-800 text-white p-6">
+    <main className="bg-gray-800 text-white p-6 rounded-md">
       {/* Workout Name Input */}
       <TextField
         label="Workout Name"
@@ -131,10 +131,10 @@ export default function WorkoutBuilderPage() {
         variant="contained"
         color="primary"
         startIcon={<AddCircleOutline />}
-        className="w-60 mb-4"
+        className="w-60"
         sx={{
-          marginTop: 4,
-          marginBottom: 4,
+          marginTop: 2,
+          marginBottom: 2,
         }}
       >
         Save Workout
@@ -142,7 +142,7 @@ export default function WorkoutBuilderPage() {
 
       {/* Filter and Search */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <FormControl fullWidth variant="outlined" className="md:w-60 w-full">
+        <FormControl variant="outlined" className="md:w-60 w-full">
           <InputLabel sx={{ color: 'white' }}>
             <Category sx={{ marginRight: 1 }} />
             Category

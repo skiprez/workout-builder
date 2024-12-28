@@ -29,7 +29,7 @@ export default function ExercisesPage() {
   }, []);
 
   return (
-    <main className=" bg-gray-800 text-white p-6">
+    <main className=" bg-gray-800 text-white p-6 rounded-md">
       {/* Title */}
       <div className="text-3xl font-bold mb-6">Exercises</div>
 

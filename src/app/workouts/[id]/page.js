@@ -20,7 +20,7 @@ export default async function WorkoutDetailPage({ params }) {
   }
 
   return (
-    <main className="min-h-screen bg-gray-800 text-white p-6">
+    <main className="min-h-screen bg-gray-800 text-white p-6 rounded-md">
       {/* Workout Title */}
       <h1 className="text-3xl font-bold mb-6">{workout.name}</h1>
       

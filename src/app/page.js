@@ -3,7 +3,7 @@ import { FitnessCenter } from '@mui/icons-material';
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen text-white">
+    <main className="flex flex-col items-center justify-center h-[1000px] text-white">
       {/* Title */}
       <h1 className="font-bold text-5xl text-center mb-6">
         Welcome to Workout Builder
