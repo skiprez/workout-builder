@@ -2,13 +2,33 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Button, TextField, IconButton } from '@mui/material';
-import { AddCircleOutline, FitnessCenter, RemoveCircleOutline } from '@mui/icons-material';
+import {
+  Button,
+  TextField,
+  IconButton,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from '@mui/material';
+import {
+  AddCircleOutline,
+  FitnessCenter,
+  RemoveCircleOutline,
+  Search,
+  FilterList,
+  Category,
+  BarChart,
+} from '@mui/icons-material';
 
 export default function WorkoutBuilderPage() {
   const [workoutName, setWorkoutName] = useState('');
   const [workout, setWorkout] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [filteredExercises, setFilteredExercises] = useState([]);
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterDifficulty, setFilterDifficulty] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetchExercises = async () => {
     const { data, error } = await supabase.from('exercises').select('*');
@@ -54,9 +74,37 @@ export default function WorkoutBuilderPage() {
     setWorkout(workout.filter((exercise) => exercise.id !== id));
   };
 
+  const filterExercises = () => {
+    let filtered = exercises;
+
+    if (filterCategory) {
+      filtered = filtered.filter((exercise) => exercise.category === filterCategory);
+    }
+
+    if (filterDifficulty) {
+      filtered = filtered.filter((exercise) => exercise.difficulty === filterDifficulty);
+    }
+
+    if (searchQuery) {
+      filtered = filtered.filter((exercise) =>
+        exercise.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredExercises(filtered);
+  };
+
   useEffect(() => {
     fetchExercises();
   }, []);
+
+  useEffect(() => {
+    setFilteredExercises(exercises);
+  }, [exercises]);
+
+  useEffect(() => {
+    filterExercises();
+  }, [filterCategory, filterDifficulty, searchQuery]);
 
   return (
     <main className="bg-gray-800 text-white p-6">
@@ -68,29 +116,69 @@ export default function WorkoutBuilderPage() {
         onChange={(e) => setWorkoutName(e.target.value)}
         className="bg-gray-900 text-white mb-6 rounded-md"
         fullWidth
+        sx={{
+          '& .MuiInputLabel-root': { color: 'white' },
+          '& .MuiInputBase-input': { color: 'white' },
+        }}
+        InputProps={{
+          startAdornment: <FitnessCenter sx={{ color: 'white', marginRight: 1 }} />,
+        }}
       />
 
-      {/* Available Exercises */}
-      <h2 className="text-xl font-semibold mb-4">Available Exercises</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {exercises.map((exercise) => (
-          <div
-            key={exercise.id}
-            className="bg-gray-700 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer"
-            onClick={() => setWorkout([...workout, { ...exercise, sets: 3, reps: 10, rest_time: 60 }])}
+      {/* Save Workout Button */}
+      <Button
+        onClick={saveWorkout}
+        variant="contained"
+        color="primary"
+        startIcon={<AddCircleOutline />}
+        className="w-60 mb-4"
+      >
+        Save Workout
+      </Button>
+
+      {/* Filter and Search */}
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <FormControl fullWidth variant="outlined" className="md:w-60 w-full">
+          <InputLabel sx={{ color: 'white' }}>
+            <Category sx={{ marginRight: 1 }} />
+            Category
+          </InputLabel>
+          <Select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            sx={{
+              '& .MuiInputBase-input': { color: 'white' },
+              '& .MuiSvgIcon-root': { color: 'white' },
+            }}
           >
-            <div className="flex items-center mb-4">
-              <FitnessCenter className="mr-2" />
-              <h3 className="font-semibold">{exercise.name}</h3>
-            </div>
-            <p className="text-gray-400">{exercise.description}</p>
-          </div>
-        ))}
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="Strength">Strength</MenuItem>
+            <MenuItem value="Cardio">Cardio</MenuItem>
+            <MenuItem value="Core">Core</MenuItem>
+            <MenuItem value="Flexibility">Flexibility</MenuItem>
+            <MenuItem value="Plyometrics">Plyometrics</MenuItem>
+          </Select>
+        </FormControl>
+
+        <TextField
+          label="Search"
+          variant="outlined"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="bg-gray-900 text-white md:w-60 w-full"
+          sx={{
+            '& .MuiInputLabel-root': { color: 'white' },
+            '& .MuiInputBase-input': { color: 'white' },
+          }}
+          InputProps={{
+            startAdornment: <Search sx={{ color: 'white', marginRight: 1 }} />,
+          }}
+        />
       </div>
 
       {/* Selected Exercises */}
-      <h2 className="text-xl font-semibold mb-4">Selected Exercises</h2>
-      <div className="space-y-4">
+      <h2 className="text-xl font-semibold mb-4"><FitnessCenter sx={{ color: 'white', marginRight: 1 }} />Selected Exercises</h2>
+      <div className="space-y-4 mb-4">
         {workout.map((exercise, index) => (
           <div
             key={index}
@@ -114,16 +202,26 @@ export default function WorkoutBuilderPage() {
         ))}
       </div>
 
-      {/* Save Workout Button */}
-      <Button
-        onClick={saveWorkout}
-        variant="contained"
-        color="primary"
-        startIcon={<AddCircleOutline />}
-        className="w-60 mt-6"
-      >
-        Save Workout
-      </Button>
+      {/* Available Exercises */}
+      <h2 className="text-xl font-semibold mb-4">
+        <FilterList sx={{ marginRight: 1 }} />
+        Available Exercises
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {filteredExercises.map((exercise) => (
+          <div
+            key={exercise.id}
+            className="bg-gray-700 p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer"
+            onClick={() => setWorkout([...workout, { ...exercise, sets: 3, reps: 10, rest_time: 60 }])}
+          >
+            <div className="flex items-center mb-4">
+              <FitnessCenter className="mr-2" />
+              <h3 className="font-semibold">{exercise.name}</h3>
+            </div>
+            <p className="text-gray-400">{exercise.description}</p>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }

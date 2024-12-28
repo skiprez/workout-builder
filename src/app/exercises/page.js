@@ -48,6 +48,10 @@ export default function ExercisesPage() {
           onChange={(e) => setNewExercise({ ...newExercise, name: e.target.value })}
           className="bg-gray-900 text-white rounded-md"
           fullWidth
+          sx={{
+            '& .MuiInputLabel-root': { color: 'white' },
+            '& .MuiInputBase-input': { color: 'white' },
+          }}
         />
         <TextField
           label="Category"
@@ -56,6 +60,10 @@ export default function ExercisesPage() {
           onChange={(e) => setNewExercise({ ...newExercise, category: e.target.value })}
           className="bg-gray-900 text-white rounded-md"
           fullWidth
+          sx={{
+            '& .MuiInputLabel-root': { color: 'white' },
+            '& .MuiInputBase-input': { color: 'white' },
+          }}
         />
         <TextField
           label="Description"
@@ -66,6 +74,10 @@ export default function ExercisesPage() {
           fullWidth
           multiline
           rows={3}
+          sx={{
+            '& .MuiInputLabel-root': { color: 'white' },
+            '& .MuiInputBase-input': { color: 'white' },
+          }}
         />
         <TextField
           label="Duration (seconds)"
@@ -74,6 +86,10 @@ export default function ExercisesPage() {
           onChange={(e) => setNewExercise({ ...newExercise, duration: Number(e.target.value) })}
           className="bg-gray-900 text-white rounded-md"
           fullWidth
+          sx={{
+            '& .MuiInputLabel-root': { color: 'white' },
+            '& .MuiInputBase-input': { color: 'white' },
+          }}
         />
         <Button
           type="submit"
