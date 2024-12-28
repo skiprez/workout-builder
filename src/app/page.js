@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { FitnessCenter } from '@mui/icons-material';
 import Image from 'next/image';
-import Logo from '/home/skiprez/Documents/Workspace/nextjs-projects/workout-builder/public/nobackgroundWorkoutBuilder.png'
+import Logo from '/public/nobackgroundWorkoutBuilder.png'
 
 export default function HomePage() {
   return (
