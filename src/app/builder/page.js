@@ -132,6 +132,10 @@ export default function WorkoutBuilderPage() {
         color="primary"
         startIcon={<AddCircleOutline />}
         className="w-60 mb-4"
+        sx={{
+          marginTop: 4,
+          marginBottom: 4,
+        }}
       >
         Save Workout
       </Button>
