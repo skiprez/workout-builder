@@ -1,10 +1,14 @@
 import { Button } from '@mui/material';
 import { FitnessCenter } from '@mui/icons-material';
+import Image from 'next/image';
+import Logo from '/home/skiprez/Documents/Workspace/nextjs-projects/workout-builder/public/nobackgroundWorkoutBuilder.png'
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col items-center justify-center h-[1000px] text-white">
+    <main className="flex flex-col items-center justify-center h-[900px] text-white">
       {/* Title */}
+      <Image src={Logo} alt="Workout Builder Logo" className="w-[300px] h-[300px] mb-[-50px]" />
+
       <h1 className="font-bold text-5xl text-center mb-6">
         Welcome to Workout Builder
       </h1>
